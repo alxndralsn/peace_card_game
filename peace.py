@@ -24,10 +24,12 @@ def card_comparison(p1_card, p2_card):
 		if the cards are equal, return 0.
 
 		Hint, using the index function will make this very simple (one liner)"""
-    if 1st_hand[0] > 2nd_hand[0]:
-        return 1st_hand
-    elif 1st_hand[0] < 2nd_hand[0]:
-        return 2nd_hand
+    if p1_card[0] > p2_card[0]:
+        return p1_card
+    elif p1_card[0] < p2_card[0]:
+        return p2_card
+    else:
+        return 0
 
 def play_round(player1_hand, player2_hand):
     """Play a single round of the game.
