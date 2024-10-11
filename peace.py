@@ -14,9 +14,11 @@ shuffled_deck = random.shuffle(deck)
 # Split the deck into two hands
 def split_list(list):
     half = len(list)//2
-    1st_hand = list[half:]
-    2nd_hand = list[:half]
-    return 1st_hand, 2nd_hand
+    return list[:half], list[half:]
+
+p1_deck, p2_deck = split_list(deck)
+p1_card = p1_deck.pop(0)
+p2_card = p2_deck.pop(0)
 
 def card_comparison(p1_card, p2_card):
     """This is the logic that compares two cards to find the stronger card
@@ -24,12 +26,12 @@ def card_comparison(p1_card, p2_card):
 		if the cards are equal, return 0.
 
 		Hint, using the index function will make this very simple (one liner)"""
-    if p1_card[0] > p2_card[0]:
-        return p1_card
-    elif p1_card[0] < p2_card[0]:
-        return p2_card
+    if ranks.index(p1_card[1]) > ranks.index(p2_card[1]):
+	    return 1
+    elif ranks.index(p1_card[1]) < ranks.index(p2_card[1]):
+         return 2
     else:
-        return 0
+         return 0
 
 def play_round(player1_hand, player2_hand):
     """Play a single round of the game.
@@ -52,4 +54,4 @@ def play_game():
 
 # Call the main function to start the game
 play_game()
-     
+    
