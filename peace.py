@@ -16,7 +16,7 @@ def split_list(list):
     half = len(list)//2
     return list[:half], list[half:]
 
-p1_hand, p2_hand = split_list(deck)
+p1_hand, p2_hand = split_list(shuffled_deck)
 p1_card = p1_hand.pop(0)
 p2_card = p2_hand.pop(0)
 
