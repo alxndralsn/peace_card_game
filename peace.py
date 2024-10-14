@@ -8,17 +8,10 @@ suits = ("hearts", "diamonds", "clubs", "spades")
 # Create a deck of cards
 deck = [(rank, suit) for rank in ranks for suit in suits]
 
-# Shuffle the deck 
-shuffled_deck = random.shuffle(deck)
-
 # Split the deck into two hands
 def split_list(list):
     half = len(list)//2
     return list[:half], list[half:]
-
-p1_hand, p2_hand = split_list(shuffled_deck)
-p1_card = p1_hand.pop(0)
-p2_card = p2_hand.pop(0)
 
 def card_comparison(p1_card, p2_card):
     """This is the logic that compares two cards to find the stronger card
@@ -33,7 +26,7 @@ def card_comparison(p1_card, p2_card):
     else:
         return 0
 
-def play_round(p1_hand, p2_hand):
+def play_round(p1_hand, p2_hand, p1_extra, p2_extra):
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
 		if both players flip the same value card, call the war function
@@ -42,16 +35,15 @@ def play_round(p1_hand, p2_hand):
     p2_card = p2_hand.pop(0)
     print(p1_card)
     print(p2_card)
-    p1_extra = []
-    p2_extra = []
     if card_comparison(p1_card, p2_card) == 0:
-        war(p1_card, p2_card)
+        p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand, p1_extra, p2_extra)
     elif card_comparison(p1_card, p2_card) == 1:
         p1_extra.append(p1_card, p2_card)
     elif card_comparison(p1_card, p2_card) == 2:
         p2_extra.append(p1_card, p2_card)
+    return (p1_hand, p2_hand, p1_extra, p2_extra)
 
-def war(player1_hand, player2_hand):
+def war(p1_hand, p2_hand, p1_extra, p2_extra):
     """Handle the 'war' scenario when cards are equal.
 		recall the rules of war, both players put 3 cards face down, 
 		then both players flip face up a 4th card. The player with the stronger
@@ -59,20 +51,25 @@ def war(player1_hand, player2_hand):
 	"""
     p1_3_down = p1_hand.pop(0), p1_hand.pop(1), p1_hand.pop(2)
     p2_3_down = p2_hand.pop(0), p2_hand.pop(1), p2_hand.pop(2)
-    play_round(p1_hand, p2_hand)
+    p1_card = p1_hand.pop(0)
+    p2_card = p2_hand.pop(0)
     if card_comparison(p1_card, p2_card) == 0:
-        war(p1_card, p2_card)
+        p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand, p1_extra, p2_extra)
     elif card_comparison(p1_card, p2_card) == 1:
-        p1_extra.append(p1_3_down)
-        p1_extra.append(p2_3_down)
+        p1_extra.append(p1_card, p2_card, p1_3_down, p2_3_down)
     elif card_comparison(p1_card, p2_card) == 2:
-        p2_extra.append(p1_3_down)
-        p2_extra.append(p2_3_down)
-    
+        p2_extra.append(p1_card, p2_card, p1_3_down, p2_3_down)
+    return (p1_hand, p2_hand, p1_extra, p2_extra)
 
 def play_game():
     """Main function to run the game."""
-    # Your code here
+    # Shuffle the deck 
+    shuffled_deck = random.shuffle(deck)
+
+    p1_hand, p2_hand = split_list(shuffled_deck)
+    p1_extra = []
+    p2_extra = []
+    p1_hand, p2_hand, p1_extra, p2_extra = play_round(p1_hand, p2_hand, p1_extra, p2_extra)
 
 # Call the main function to start the game
 play_game()
