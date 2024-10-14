@@ -33,7 +33,7 @@ def card_comparison(p1_card, p2_card):
     else:
         return 0
 
-def play_round(player1_hand, player2_hand):
+def play_round(p1_hand, p2_hand):
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
 		if both players flip the same value card, call the war function
@@ -57,7 +57,18 @@ def war(player1_hand, player2_hand):
 		then both players flip face up a 4th card. The player with the stronger
 		card takes all the cards.		
 	"""
-    # Your code here
+    p1_3_down = p1_hand.pop(0), p1_hand.pop(1), p1_hand.pop(2)
+    p2_3_down = p2_hand.pop(0), p2_hand.pop(1), p2_hand.pop(2)
+    play_round(p1_hand, p2_hand)
+    if card_comparison(p1_card, p2_card) == 0:
+        war(p1_card, p2_card)
+    elif card_comparison(p1_card, p2_card) == 1:
+        p1_extra.append(p1_3_down)
+        p1_extra.append(p2_3_down)
+    elif card_comparison(p1_card, p2_card) == 2:
+        p2_extra.append(p1_3_down)
+        p2_extra.append(p2_3_down)
+    
 
 def play_game():
     """Main function to run the game."""
