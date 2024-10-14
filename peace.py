@@ -16,9 +16,9 @@ def split_list(list):
     half = len(list)//2
     return list[:half], list[half:]
 
-p1_deck, p2_deck = split_list(deck)
-p1_card = p1_deck.pop(0)
-p2_card = p2_deck.pop(0)
+p1_hand, p2_hand = split_list(deck)
+p1_card = p1_hand.pop(0)
+p2_card = p2_hand.pop(0)
 
 def card_comparison(p1_card, p2_card):
     """This is the logic that compares two cards to find the stronger card
@@ -27,18 +27,29 @@ def card_comparison(p1_card, p2_card):
 
 		Hint, using the index function will make this very simple (one liner)"""
     if ranks.index(p1_card[1]) > ranks.index(p2_card[1]):
-	    return 1
+        return 1
     elif ranks.index(p1_card[1]) < ranks.index(p2_card[1]):
-         return 2
+        return 2
     else:
-         return 0
+        return 0
 
 def play_round(player1_hand, player2_hand):
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
 		if both players flip the same value card, call the war function
 	"""
-    # Your code here
+    p1_card = p1_hand.pop(0)
+    p2_card = p2_hand.pop(0)
+    print(p1_card)
+    print(p2_card)
+    p1_extra = []
+    p2_extra = []
+    if card_comparison(p1_card, p2_card) == 0:
+        war(p1_card, p2_card)
+    elif card_comparison(p1_card, p2_card) == 1:
+        p1_extra.append(p1_card, p2_card)
+    elif card_comparison(p1_card, p2_card) == 2:
+        p2_extra.append(p1_card, p2_card)
 
 def war(player1_hand, player2_hand):
     """Handle the 'war' scenario when cards are equal.
