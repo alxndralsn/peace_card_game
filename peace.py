@@ -36,8 +36,9 @@ def play_round(p1_hand, p2_hand):
     print(f"Player 2's card is... {p2_card}")
     time.sleep(1)
     if card_comparison(p1_card, p2_card) == 0:
-        p1_hand, p2_hand = war(p1_hand, p2_hand)
         print("A war has been declared!")
+        time.sleep(1)
+        p1_hand, p2_hand = war(p1_hand, p2_hand)
     elif card_comparison(p1_card, p2_card) == 1:
         print("Player 1 has won this round!")
         p1_hand.extend([p1_card, p2_card])
@@ -66,6 +67,7 @@ def war(p1_hand, p2_hand):
     time.sleep(1)
     if card_comparison(p1_card, p2_card) == 0:
         print("Another war has been declared!")
+        time.sleep(1)
         p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand)
     elif card_comparison(p1_card, p2_card) == 1:
         print("Player 1 has won this war!")
@@ -95,9 +97,22 @@ def play_game():
     print("Ready to play!")
     input("Press enter to continue...")
     time.sleep(1)
-    for x in deck:
+    while len(p1_hand) != 0 or len(p2_hand) != 0:
         p1_hand, p2_hand = play_round(p1_hand, p2_hand)
         input("Press enter to continue...")
+    
+    time.sleep(1)
+    print("It seems one player doesn't have any cards left :'(")
+    time.sleep(1)
+    print("The game is over :'(")
+    print("But wait!")
+    time.sleep(1)
+    print("Let's see who the winner is...")
+
+    if len(p1_hand) == 0:
+        print("Player 2 has won the game!")
+    elif len(p2_hand) == 0:
+        print("Player 1 has won the game!")
 
 # Call the main function to start the game
 play_game()
