@@ -24,7 +24,7 @@ def card_comparison(p1_card, p2_card):
     else:
         return 0
 
-def play_round(p1_hand, p2_hand, p1_extra, p2_extra):
+def play_round(p1_hand, p2_hand):
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
 		if both players flip the same value card, call the war function
@@ -32,19 +32,21 @@ def play_round(p1_hand, p2_hand, p1_extra, p2_extra):
     p1_card = p1_hand.pop(0)
     p2_card = p2_hand.pop(0)
     print(f"Player 1's card is... {p1_card}")
+    time.sleep(1)
     print(f"Player 2's card is... {p2_card}")
+    time.sleep(1)
     if card_comparison(p1_card, p2_card) == 0:
-        p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand, p1_extra, p2_extra)
+        p1_hand, p2_hand = war(p1_hand, p2_hand)
         print("A war has been declared!")
     elif card_comparison(p1_card, p2_card) == 1:
         print("Player 1 has won this round!")
-        p1_extra.extend([p1_card, p2_card])
+        p1_hand.extend([p1_card, p2_card])
     elif card_comparison(p1_card, p2_card) == 2:
         print("Player 2 has won this round!")
-        p2_extra.extend([p1_card, p2_card])
-    return (p1_hand, p2_hand, p1_extra, p2_extra)
+        p2_hand.extend([p1_card, p2_card])
+    return (p1_hand, p2_hand)
 
-def war(p1_hand, p2_hand, p1_extra, p2_extra):
+def war(p1_hand, p2_hand):
     """Handle the 'war' scenario when cards are equal.
 		recall the rules of war, both players put 3 cards face down, 
 		then both players flip face up a 4th card. The player with the stronger
@@ -57,22 +59,27 @@ def war(p1_hand, p2_hand, p1_extra, p2_extra):
     p1_card = p1_hand.pop(0)
     p2_card = p2_hand.pop(0)
     print("Let's see whose 4th card is going to win this war...")
+    time.sleep(1)
     print(f"Player 1's card is... {p1_card}")
+    time.sleep(1)
     print(f"Player 2's card is... {p2_card}")
+    time.sleep(1)
     if card_comparison(p1_card, p2_card) == 0:
         print("Another war has been declared!")
-        p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand, p1_extra, p2_extra)
+        p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand)
     elif card_comparison(p1_card, p2_card) == 1:
         print("Player 1 has won this war!")
-        p1_extra.extend([p1_card, p2_card, p1_3_down, p2_3_down])
+        p1_hand.extend([p1_card, p2_card, p1_3_down, p2_3_down])
     elif card_comparison(p1_card, p2_card) == 2:
         print("Player 2 has won this war!")
-        p2_extra.extend([p1_card, p2_card, p1_3_down, p2_3_down])
-    return (p1_hand, p2_hand, p1_extra, p2_extra)
+        p2_hand.extend([p1_card, p2_card, p1_3_down, p2_3_down])
+    return (p1_hand, p2_hand)
 
 def play_game():
     """Main function to run the game."""
+    time.sleep(1)
     print("Let's play the Peace card game!")
+    time.sleep(1)
     print("Let's prepare the deck!")
     deck = [(rank, suit) for rank in ranks for suit in suits]
     time.sleep(1)
@@ -85,17 +92,12 @@ def play_game():
     p1_hand, p2_hand = split_list(deck)
     time.sleep(1)
 
-    p1_extra = []
-    p2_extra = []
-    print("Ready play!")
+    print("Ready to play!")
     input("Press enter to continue...")
+    time.sleep(1)
     for x in deck:
-        time.sleep(1)
-        p1_hand, p2_hand, p1_extra, p2_extra = play_round(p1_hand, p2_hand, p1_extra, p2_extra)
-        print("It seems the deck is empty and this part of the game is over :'(")
+        p1_hand, p2_hand = play_round(p1_hand, p2_hand)
         input("Press enter to continue...")
-        p1_hand = p1_extra
-        p2_hand = p2_extra
 
 # Call the main function to start the game
 play_game()
