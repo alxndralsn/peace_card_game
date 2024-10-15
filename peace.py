@@ -34,9 +34,8 @@ def play_round(p1_hand, p2_hand, p1_extra, p2_extra):
     print(f"Player 1's card is... {p1_card}")
     print(f"Player 2's card is... {p2_card}")
     if card_comparison(p1_card, p2_card) == 0:
-        print("A war has been declared!")
-        time.sleep(1)
         p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand, p1_extra, p2_extra)
+        print("A war has been declared!")
     elif card_comparison(p1_card, p2_card) == 1:
         print("Player 1 has won this round!")
         p1_extra.extend([p1_card, p2_card])
@@ -51,12 +50,15 @@ def war(p1_hand, p2_hand, p1_extra, p2_extra):
 		then both players flip face up a 4th card. The player with the stronger
 		card takes all the cards.		
 	"""
-    print("Both players are putting down 3 cards...")
+    print("Player 1 and Player 2 are putting down 3 cards...")
+    time.sleep(1)
     p1_3_down = p1_hand.pop(0), p1_hand.pop(1), p1_hand.pop(2)
     p2_3_down = p2_hand.pop(0), p2_hand.pop(1), p2_hand.pop(2)
     p1_card = p1_hand.pop(0)
     p2_card = p2_hand.pop(0)
     print("Let's see whose 4th card is going to win this war...")
+    print(f"Player 1's card is... {p1_card}")
+    print(f"Player 2's card is... {p2_card}")
     if card_comparison(p1_card, p2_card) == 0:
         print("Another war has been declared!")
         p1_hand, p2_hand, p1_extra, p2_extra = war(p1_hand, p2_hand, p1_extra, p2_extra)
@@ -70,7 +72,8 @@ def war(p1_hand, p2_hand, p1_extra, p2_extra):
 
 def play_game():
     """Main function to run the game."""
-    print("Let's prepare the deck for the game!")
+    print("Let's play the Peace card game!")
+    print("Let's prepare the deck!")
     deck = [(rank, suit) for rank in ranks for suit in suits]
     time.sleep(1)
 
@@ -84,8 +87,8 @@ def play_game():
 
     p1_extra = []
     p2_extra = []
-    print("Let's play!")
-    time.sleep(1)
+    print("Ready play!")
+    input("Press enter to continue...")
     for x in deck:
         time.sleep(1)
         p1_hand, p2_hand, p1_extra, p2_extra = play_round(p1_hand, p2_hand, p1_extra, p2_extra)
