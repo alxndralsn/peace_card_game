@@ -60,13 +60,25 @@ def war(p1_hand, p2_hand, p1_card, p2_card):
 	then both players flip face up a 4th card. The player with the stronger
 	card takes all the cards.		
 	"""
-    print("Player 1 and Player 2 are putting down 3 cards...")
     time.sleep(1)
-    p1_3_down = [p1_hand.pop(0), p1_hand.pop(1), p1_hand.pop(2)]
-    p2_3_down = [p2_hand.pop(0), p2_hand.pop(1), p2_hand.pop(2)]
-    p1_new_card = p1_hand.pop(0)
-    p2_new_card = p2_hand.pop(0)
-    print("Let's see whose 4th card is going to win this war...")
+    if len(p1_hand) >= 4 and len(p2_hand) >= 4:
+        print("Player 1 and Player 2 are putting down 3 cards...")
+        p1_3_down = [p1_hand.pop(0), p1_hand.pop(1), p1_hand.pop(2)]
+        p2_3_down = [p2_hand.pop(0), p2_hand.pop(1), p2_hand.pop(2)]
+        p1_new_card = p1_hand.pop(0)
+        p2_new_card = p2_hand.pop(0)
+    elif len(p1_hand) < 4:
+        print("It seems Player 1 doesn't have enough cards to fight fairly!")
+        print("They shall play with what they have!")
+        p1_new_card = p1_hand.pop()
+        p1_3_down = p1_hand.copy
+    elif len(p2_hand) < 4:
+        print("It seems Player 2 doesn't have enough cards to fight fairly!")
+        print("They shall play with what they have!")
+        p2_new_card = p2_hand.pop()
+        p2_3_down = p2_hand.copy
+
+    print("Let's see who is going to win this war...")
     time.sleep(1)
     print(f"Player 1's card is... {p1_new_card}")
     time.sleep(1)
