@@ -2,47 +2,53 @@
 import random
 import time
 
+DEBUG = True
+SLEEP = 0.01
+
 # Define the ranks and suits
 ranks = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
 suits = ("hearts", "diamonds", "clubs", "spades")
 
 def play_game():
     #Preparation of the game
-    time.sleep(1)
+    time.sleep(SLEEP)
     print("Let's play the Peace card game!")
-    time.sleep(1)
+    time.sleep(SLEEP)
     print("Let's prepare the deck!")
     deck = [(rank, suit) for rank in ranks for suit in suits]
-    time.sleep(1)
+    time.sleep(SLEEP)
 
     print("Shuffling the deck...")
     random.shuffle(deck)
-    time.sleep(1)
+    time.sleep(SLEEP)
 
     print("Splitting the deck...")
     p1_hand, p2_hand = split_list(deck)
-    time.sleep(1)
+    time.sleep(SLEEP)
 
     print("Ready to play!")
-    input("Press enter to continue...")
+    if not DEBUG:
+        input("Press enter to continue...")
     print(" ")
 
     #Actual playing
-    time.sleep(1)
-    while len(p1_hand) > 0 or len(p2_hand) > 0:
+    time.sleep(SLEEP)
+    while len(p1_hand) > 0 and len(p2_hand) > 0:
         p1_hand, p2_hand = play_round(p1_hand, p2_hand)
-        input("Press enter to continue...")
+        assert len(p1_hand + p2_hand) == 52
+        if not DEBUG:
+            input("Press enter to continue...")
         print(" ")
     
     #One of the players doesn't have any cards left
     #End of the game
-    time.sleep(1)
+    time.sleep(SLEEP)
     print("It seems one player doesn't have any cards left :'(")
-    time.sleep(1)
+    time.sleep(SLEEP)
     print("The game is over...")
-    time.sleep(0.5)
+    time.sleep(SLEEP)
     print("But wait!")
-    time.sleep(1)
+    time.sleep(SLEEP)
     print("Let's see who the winner is...")
 
     if len(p1_hand) == 0:
@@ -64,20 +70,20 @@ def play_round(p1_hand, p2_hand):
     p1_card = p1_hand.pop(0)
     p2_card = p2_hand.pop(0)
     print(f"Player 1's card is... {p1_card}")
-    time.sleep(1)
+    time.sleep(SLEEP)
     print(f"Player 2's card is... {p2_card}")
-    time.sleep(1)
+    time.sleep(SLEEP)
     if card_comparison(p1_card, p2_card) == 0:
         print("A war has been declared!")
-        time.sleep(1)
-        p1_hand, p2_hand = war(p1_hand, p2_hand, p1_card, p2_card)
+        time.sleep(SLEEP)
+        p1_hand, p2_hand, _ = war(p1_hand, p2_hand, p1_card, p2_card)
     elif card_comparison(p1_card, p2_card) == 1:
         print("Player 1 has won this round!")
         p1_hand.extend([p1_card, p2_card])
     elif card_comparison(p1_card, p2_card) == 2:
         print("Player 2 has won this round!")
         p2_hand.extend([p1_card, p2_card])
-    time.sleep(1)
+    time.sleep(SLEEP)
     print(f"Player 1 now has {len(p1_hand)} cards")
     print(f"Player 2 now has {len(p2_hand)} cards")
     return (p1_hand, p2_hand)
@@ -104,45 +110,97 @@ def war(p1_hand, p2_hand, p1_card, p2_card):
 	then both players flip face up a 4th card. The player with the stronger
 	card takes all the cards.		
 	"""
-    time.sleep(1)
-    if len(p1_hand) >= 4 and len(p2_hand) >= 4:
-        print("Player 1 and Player 2 are putting down 3 cards...")
+    time.sleep(SLEEP)
+    #Player 1 plays
+    if len(p1_hand) >= 4:
+        print("Player 1 is putting down 3 cards...")
         p1_3_down = [p1_hand.pop(0), p1_hand.pop(0), p1_hand.pop(0)]
-        p2_3_down = [p2_hand.pop(0), p2_hand.pop(0), p2_hand.pop(0)]
         p1_new_card = p1_hand.pop(0)
-        p2_new_card = p2_hand.pop(0)
-    elif len(p1_hand) < 4:
-        print("It seems Player 1 doesn't have enough cards and lacks the cardpower to fight at full force!")
+    elif 0 < len(p1_hand) < 4:
+        print("Player 1 doesn't have enough cards and lacks the cardpower to fight at full force!")
         print("They shall play with what they have!")
         p1_new_card = p1_hand.pop()
-        p1_3_down = p1_hand.copy
+        p1_3_down = p1_hand.copy()
+    elif len(p1_hand) == 0:
+        print("Player 1 has 1 card left and will play it!")
+        p1_new_card = p1_card
+        p1_3_down = []
+
+    #Player 2 plays
+    if len(p2_hand) >= 4:
+        print("Player 2 is putting down 3 cards...")
         p2_3_down = [p2_hand.pop(0), p2_hand.pop(0), p2_hand.pop(0)]
         p2_new_card = p2_hand.pop(0)
-    elif len(p2_hand) < 4:
-        print("It seems Player 2 doesn't have enough cards and lacks the cardpower to fight at full force!")
+    elif 0 < len(p2_hand) < 4:
+        print("Player 2 doesn't have enough cards and lacks the cardpower to fight at full force!")
         print("They shall play with what they have!")
-        p1_3_down = [p1_hand.pop(0), p1_hand.pop(0), p1_hand.pop(0)]
-        p1_new_card = p1_hand.pop(0)
         p2_new_card = p2_hand.pop()
-        p2_3_down = p2_hand.copy
+        p2_3_down = p2_hand.copy()
+    elif len(p2_hand) == 0:
+        print("Player 2 has 1 card left and will play it!")
+        p2_new_card = p2_card
+        p2_3_down = []
 
     print("Let's see who is going to win this war...")
-    time.sleep(1)
+    time.sleep(SLEEP)
     print(f"Player 1's card is... {p1_new_card}")
-    time.sleep(1)
+    time.sleep(SLEEP)
     print(f"Player 2's card is... {p2_new_card}")
-    time.sleep(1)
-    if card_comparison(p1_new_card, p2_new_card) == 0:
-        print("Another war has been declared!")
-        time.sleep(1)
-        p1_hand, p2_hand = war(p1_hand, p2_hand, p1_new_card, p2_new_card)
-    elif card_comparison(p1_new_card, p2_new_card) == 1:
-        print("Player 1 has won this war!")
-        p1_hand.extend([p1_card, p2_card] + [p1_new_card, p2_new_card] + p1_3_down + p2_3_down)
-    elif card_comparison(p1_new_card, p2_new_card) == 2:
-        print("Player 2 has won this war!")
-        p2_hand.extend([p1_card, p2_card] + [p1_new_card, p2_new_card] + p1_3_down + p2_3_down)
-    return (p1_hand, p2_hand)
+    time.sleep(SLEEP)
+    if p1_card != p1_new_card and p2_card != p2_new_card: #The players have more than 1 card in their hands after declaring war
+        if card_comparison(p1_new_card, p2_new_card) == 0:
+            print("Another war has been declared!")
+            time.sleep(SLEEP)
+            p1_hand, p2_hand, winner = war(p1_hand, p2_hand, p1_new_card, p2_new_card)
+            if winner == 1:
+                p1_hand.extend([p1_card, p2_card] + p1_3_down + p2_3_down) #we assume the order of how the cards are extended doesn't matter
+            elif winner == 2:
+                p2_hand.extend([p1_card, p2_card] + p1_3_down + p2_3_down)
+        elif card_comparison(p1_new_card, p2_new_card) == 1:
+            print("Player 1 has won this war!")
+            p1_hand.extend([p1_card, p2_card, p1_new_card, p2_new_card] + p1_3_down + p2_3_down)
+            winner = 1
+        elif card_comparison(p1_new_card, p2_new_card) == 2:
+            print("Player 2 has won this war!")
+            p2_hand.extend([p1_card, p2_card, p1_new_card, p2_new_card] + p1_3_down + p2_3_down)
+            winner = 2
+
+    elif p1_card == p1_new_card: #Player 1 had 0 card after the war and its card is its new card
+        if card_comparison(p1_new_card, p2_new_card) == 0:
+            print("Another war has been declared!")
+            time.sleep(SLEEP)
+            p1_hand, p2_hand, winner = war(p1_hand, p2_hand, p1_new_card, p2_new_card)
+            if winner == 1:
+                p1_hand.extend([p2_card] + p1_3_down + p2_3_down) 
+            elif winner == 2:
+                p2_hand.extend([p2_card] + p1_3_down + p2_3_down)
+        elif card_comparison(p1_new_card, p2_new_card) == 1:
+            print("Player 1 has won this war!")
+            p1_hand.extend([p2_card, p1_new_card, p2_new_card] + p1_3_down + p2_3_down) #We don't add the old card, only the new
+            winner = 1
+        elif card_comparison(p1_new_card, p2_new_card) == 2:
+            print("Player 2 has won this war!")
+            p2_hand.extend([p2_card, p1_new_card, p2_new_card] + p1_3_down + p2_3_down)
+            winner = 2
+
+    elif p2_card == p2_new_card: #Player 2 had 0 card after the war and its card is its new card
+        if card_comparison(p1_new_card, p2_new_card) == 0:
+            print("Another war has been declared!")
+            time.sleep(SLEEP)
+            p1_hand, p2_hand, winner = war(p1_hand, p2_hand, p1_new_card, p2_new_card)
+            if winner == 1:
+                p1_hand.extend([p1_card] + p1_3_down + p2_3_down) 
+            elif winner == 2:
+                p2_hand.extend([p1_card] + p1_3_down + p2_3_down)
+        elif card_comparison(p1_new_card, p2_new_card) == 1:
+            print("Player 1 has won this war!")
+            p1_hand.extend([p1_card, p1_new_card, p2_new_card] + p1_3_down + p2_3_down)
+            winner = 1
+        elif card_comparison(p1_new_card, p2_new_card) == 2:
+            print("Player 2 has won this war!")
+            p2_hand.extend([p1_card, p1_new_card, p2_new_card] + p1_3_down + p2_3_down)
+            winner = 2
+    return (p1_hand, p2_hand, winner)
 
 # Call the main function to start the game
 play_game()
