@@ -124,8 +124,8 @@ def war(p1_hand, p2_hand, p1_card, p2_card):
         p1_hand = []
     elif len(p1_hand) == 0:
         print("Player 1 has 1 card left and will play it!")
-        p1_new_card = p1_card.copy
-        p1_card = []
+        p1_new_card = p1_card
+        p1_card = None
         p1_3_down = []
 
     #Player 2 plays
@@ -141,8 +141,8 @@ def war(p1_hand, p2_hand, p1_card, p2_card):
         p2_hand = []
     elif len(p2_hand) == 0:
         print("Player 2 has 1 card left and will play it!")
-        p2_new_card = p2_card.copy
-        p2_card = []
+        p2_new_card = p2_card
+        p2_card = None
         p2_3_down = []
 
     print("Let's see who is going to win this war...")
