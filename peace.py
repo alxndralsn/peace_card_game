@@ -2,8 +2,8 @@
 import random
 import time
 
-DEBUG = True
-SLEEP = 0.01
+DEBUG = False #if we went the testing to be without pressing enter to continue
+SLEEP = 1 #we can change for the testing to go quickly
 
 # Define the ranks and suits
 ranks = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
@@ -35,7 +35,7 @@ def play_game():
     time.sleep(SLEEP)
     while len(p1_hand) > 0 and len(p2_hand) > 0:
         p1_hand, p2_hand = play_round(p1_hand, p2_hand)
-        assert len(p1_hand + p2_hand) == 52
+        assert len(p1_hand + p2_hand) == 52 #want to make sure no cards go missing
         if not DEBUG:
             input("Press enter to continue...")
         print(" ")
@@ -112,11 +112,11 @@ def war(p1_hand, p2_hand, p1_card, p2_card):
 	"""
     time.sleep(SLEEP)
     #Player 1 plays
-    if len(p1_hand) >= 4:
+    if len(p1_hand) >= 4: #player has enough for war
         print("Player 1 is putting down 3 cards...")
         p1_3_down = [p1_hand.pop(0), p1_hand.pop(0), p1_hand.pop(0)]
         p1_new_card = p1_hand.pop(0)
-    elif 0 < len(p1_hand) < 4:
+    elif 0 < len(p1_hand) < 4: #player has complications with the war
         print("Player 1 doesn't have enough cards and lacks the cardpower to fight at full force!")
         print("They shall play with what they have!")
         p1_new_card = p1_hand.pop()
@@ -155,7 +155,7 @@ def war(p1_hand, p2_hand, p1_card, p2_card):
         print("Another war has been declared!")
         time.sleep(SLEEP)
         p1_hand, p2_hand, winner = war(p1_hand, p2_hand, p1_new_card, p2_new_card)
-        if winner == 1:
+        if winner == 1: #we want to know the winner because we already added the new cards, not the old
             p1_hand.extend([p1_card, p2_card] + p1_3_down + p2_3_down) #we assume the order of how the cards are extended doesn't matter
         elif winner == 2:
             p2_hand.extend([p1_card, p2_card] + p1_3_down + p2_3_down)
